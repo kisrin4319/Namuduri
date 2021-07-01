@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="container">
+  <form th:action="@{insert}" method="post">
+
+    <input th:type="text" th:class="form-control" th:name="name">
+    <input th:type="text" th:class="form-control" th:name="title">
+    <textarea th:class="form-control" th:name="content"></textarea>
+
+    <button th:type="submit">글쓰기</button>
+  </form>
+</div>
+
+</body>
+</html>

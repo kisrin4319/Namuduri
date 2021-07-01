@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace ="com.spring.namuduri.mapper.BoardMapper">
+
+    <select id="boardCount" resultType="int">
+        SELECT COUNT(BoardID) AS Cnt FROM Board;
+    </select>
+
+    <select id="getList" resultType="com.spring.namuduri.domain.Board">
+        SELECT * FROM Board;
+    </select>
+
+    <select id="getBoard" parameterType="Long" resultType="com.spring.namuduri.domain.Board">
+        SELECT *
+          FROM Board
+         WHERE BoardId = #{boardId};
+    </select>
+
+    <insert id="InsertBoard" parameterType="com.spring.namuduri.domain.Board">
+        INSERT INTO Board(title,content,name)
+        VALUES (#{title},#{content},#{name});
+    </insert>
+
+</mapper>
