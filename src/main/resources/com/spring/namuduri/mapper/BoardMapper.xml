@@ -21,5 +21,17 @@
         INSERT INTO Board(title,content,name)
         VALUES (#{title},#{content},#{name});
     </insert>
+    
+    <update id="updateBoard" parameterType="com.spring.namuduri.domain.Board">
+        UPDATE Board
+           SET Title = #{title}, content = #{content}
+         WHERE BoardId = #{boardId}
+    </update>
+    
+    <delete id="deleteBoard" parameterType="com.spring.namuduri.domain.Board">
+        DELETE
+          FROM Board
+         WHERE BoardId = #{boardId}
+    </delete>
 
 </mapper>

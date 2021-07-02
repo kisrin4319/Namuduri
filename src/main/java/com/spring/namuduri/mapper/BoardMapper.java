@@ -16,5 +16,9 @@ public interface BoardMapper {
 
     void InsertBoard(Board board);
 
+    void updateBoard(Board board);
+
+    void deleteBoard(Long boardId);
+
 
 }
