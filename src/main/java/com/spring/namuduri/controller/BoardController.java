@@ -1,43 +1,62 @@
 package com.spring.namuduri.controller;
 
-import com.spring.namuduri.Service.BoardService;
-import com.spring.namuduri.domain.Board;
-import lombok.RequiredArgsConstructor;
+import com.spring.namuduri.model.Board;
+import com.spring.namuduri.repository.BoardRepository;
+import com.spring.namuduri.validator.BoardValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Controller
-@RequestMapping("/board/**")
-@RequiredArgsConstructor
+@RequestMapping("/board")
 public class BoardController {
 
-    private final BoardService service;
+    @Autowired
+    private BoardRepository boardRepository;
 
+    @Autowired
+    private BoardValidator boardValidator;
 
     @GetMapping("/list")
-    public String List(){
+    public String List(Model model,@PageableDefault(size = 5) Pageable pageable, @RequestParam(required = false,defaultValue ="") String searchText){
+        //Page<Board> boards = boardRepository.findAll(pageable);
+        Page<Board> boards = boardRepository.findByTitleContainingOrContentContaining(searchText,searchText,pageable);
+        int startPage = Math.max(1,boards.getPageable().getPageNumber() - 4);
+        int endPage   = Math.min(boards.getTotalPages(),boards.getPageable().getPageNumber() + 4);
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage",endPage);
+        model.addAttribute("boards",boards);
         return "/board/list";
     }
 
-    @GetMapping("/insert")
-    public String InsertBoardForm(){
-        return "/boards/insert";
-    }
-    @PostMapping("/insert")
-    public String InsertBoard(Board board){
-        service.InsertBoard(board);
-        return "redirect:/board/main";
-    }
+    @GetMapping("/form")
+    public String form(Model model,@RequestParam(required = false) Long id){
 
-    @PutMapping("/update")
-    public String updateBoard(Board board){
-        service.updateBoard(board);
-        return "redirect:/board/main";
+        if(id == null){
+            model.addAttribute("board", new Board());
+        } else {
+            Board board = boardRepository.findById(id).orElse(null);
+            model.addAttribute("board",board);
+        }
+        return "/board/form";
     }
-    @DeleteMapping("/delete")
-    public String deleteBoard(Long boardId){
-        service.deleteBoard(boardId);
-        return "redirect:/board/main";
+    @PostMapping("/form")
+    public String BoardSubmit(@Valid Board board, BindingResult bindingResult){
+        boardValidator.validate(board,bindingResult);
+        if(bindingResult.hasErrors() ){
+            return "/board/form";
+        }
+        boardRepository.save(board);
+        return "redirect:/board/list";
     }
 }
