@@ -11,48 +11,298 @@
     <link href="starter-template.css" th:href="@{/css/starter-template.css}" rel="stylesheet">
 
     <title th:text="${title}">Hello, Spring Boot!</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="bootstrap/img/favicon.ico" th:href="@{/bootstrap/img/favicon.ico}">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,700,600,500,300' rel='stylesheet' type='text/css'>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- all css here -->
+    <!-- bootstrap v3.3.6 css -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <!-- animate css -->
+    <link rel="stylesheet" href="bootstrap/css/animate.css" th:href="@{/bootstrap/css/animate.css}">
+    <!-- jquery-ui.min css -->
+    <link rel="stylesheet" href="bootstrap/css/jquery-ui.min.css" th:href="@{/bootstrap/css/jquery-ui.min.css}">
+    <!-- meanmenu css -->
+    <link rel="stylesheet" href="bootstrap/css/meanmenu.min.css" th:href="@{/bootstrap/css/meanmenu.min.css}">
+    <!-- Font-Awesome css -->
+    <link rel="stylesheet" href="bootstrap/css/font-awesome.min.css" th:href="@{/bootstrap/css/font-awesome.min.css}">
+    <!-- pe-icon-7-stroke css -->
+    <link rel="stylesheet" href="bootstrap/css/pe-icon-7-stroke.css" th:href="@{/bootstrap/css/pe-icon-7-stroke.css}">
+    <!-- Flaticon css -->
+    <link rel="stylesheet" href="bootstrap/css/flaticon.css" th:href="@{/bootstrap/css/flaticon.css}">
+    <!-- venobox css -->
+    <link rel="stylesheet" href="bootstrap/venobox/venobox.css" th:href="@{/bootstrap/venobox/venobox.css}" type="text/css" media="screen" />
+    <!-- nivo slider css -->
+    <link rel="stylesheet" href="bootstrap/lib/css/nivo-slider.css" th:href="@{/bootstrap/lib/css/nivo-slider.css}" type="text/css" />
+    <link rel="stylesheet" href="bootstrap/lib/css/preview.css" th:href="@{/bootstrap/lib/css/preview.css}" type="text/css" media="screen" />
+    <!-- owl.carousel css -->
+    <link rel="stylesheet" href="bootstrap/css/owl.carousel.css" th:href="@{/bootstrap/css/owl.carousel.css}">
+    <!-- style css -->
+    <link rel="stylesheet" href="bootstrap/style.css" th:href="@{/bootstrap/style.css}">
+    <!-- responsive css -->
+    <link rel="stylesheet" href="bootstrap/css/responsive.css" th:href="@{/bootstrap/css/responsive.css}">
+    <link rel="stylesheet" href="bootstrap/css/checkBox.css" th:href="@{/bootstrap/css/checkBox.css}">
+    <!-- modernizr css -->
+    <script src="bootstrap/js/vendor/modernizr-2.8.3.min.js" th:src="@{/bootstrap/js/vendor/modernizr-2.8.3.min.js}"></script>
+
+
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
-    <a class="navbar-brand" href="#">Spring Boot Tutorial</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item" th:classappend="${menu} == 'home'? 'active'">
-                <a class="nav-link" href="#" th:href="@{/}">홈 <span class="sr-only" th:if="${menu} == 'home'">(current)</span></a>
-            </li>
-            <li class="nav-item" th:classappend="${menu} == 'board'? 'active'">
-                <a class="nav-link" href="#" th:href="@{/board/list}">게시판 <span class="sr-only" th:if="${menu} == 'board'">(current)</span></a>
-            </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+<!--Header Area Start-->
+<div class="header-area" th:fragment="menu(menu)">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-6 col-xs-6">
+                <div class="header-logo">
+                    <a href="main.do">
+                        <img src="img/headerLogo.png" th:src="@{/bootstrap/img/headerLogo.png}" alt="">
+                    </a>
                 </div>
-            </li> -->
-        </ul>
+            </div>
+            <div class="col-md-1 col-sm-6 visible-sm  col-xs-6">
+                <div class="header-right">
+                    <ul>
+                        <li class="shoping-cart" style="vertical-align: unset;">
+                            <a href="#">
+                                <div th:if="${#authorization.expr('!isAuthenticated()')}">
+                                    <i class="flaticon-people"></i>
+                                </div>
+                                <div th:if="${#authorization.expr('isAuthenticated()')}">
+                                    <img sec:authorize="hasRole('ROLE_ADMIN')" th:src="@{/img/member(admin).png}" th:width="20" th:height="20">
+                                    <img sec:authorize="hasRole('ROLE_USER')" th:src="@{/img/member.png}" th:width="20" th:height="20">
+                                </div>
+                            </a>
+                            <div class="add-to-cart-product">
+                                <div class="cart-checkout">
+                                    <div th:if="${#authorization.expr('!isAuthenticated()')}">
+                                        <a href="member/loginForm.do"> Sign In
+                                            <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                    <div th:if="${#authorization.expr('isAuthenticated()')}">
+                                        <a href="member/logOut.do"> Sign Out </a>
+                                    </div>
+                                </div>
+                                <div th:if="${#authorization.expr('!isAuthenticated()')}">
+                                    <div class="cart-checkout">
+                                        <a href="member/memberInfo.do"> Sign Up
+                                            <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div th:if="${#authorization.expr('isAuthenticated()')}">
+                                    <div class ="cart-checkout" sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <a th:href="admin/main.do"> Admin Main
+                                            <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="shoping-cart">
+                            <!--<a th:href="basket/basketList.do">-->
+                                <i class="flaticon-shop"></i>
+                            <!--</a>-->
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+             <div class="col-md-9 col-sm-12 hidden-xs">
+                 <div class="mainmenu text-center">
+                     <nav>
+                         <ul id="nav">
+                             <li>
+                                 <a href="books/booksList.do">NEW BOOKS</a>
+                             </li>
+                             <li>
+                                 <a href="books/usedBooksList.do">USED BOOKS</a>
+                             </li>
+                             <li>
+                                 <a href="wish/wishList.do">WISH LIST</a>
+                             </li>
+                             <li>
+                                 <a href="order/orderListCheckView.do">MY PAGE</a>
+                                 <ul class="sub-menu">
+                                     <li>
+                                         <a href="member/memberModifyView.do">MY ACCOUNT</a>
+                                     </li>
+                                     <li>
+                                         <a href="order/orderListCheckView.do">ORDER STATUS</a>
+                                     </li>
+                                 </ul>
+                             </li>
+                             <li>
+                                 <a href="#">SERVICE CENTER</a>
+                                 <ul class="sub-menu">
+                                     <li>
+                                         <a href="board/boardList.do">Q&A</a>
+                                     </li>
+                                     <li>
+                                         <a href="faq/faqList.do">FAQ</a>
+                                     </li>
+                                 </ul>
+                             <li>
+                                 <a href="common/contact.do">CONTACT</a>
+                             </li>
+                         </ul>
+                     </nav>
+                 </div>
+             </div>
+             <div class="col-md-1 hidden-sm">
+                 <div class="header-right">
+                     <ul>
+                         <li class="shoping-cart" style="vertical-align: unset;">
+                             <a href="#">
+                                 <div th:if="${#authorization.expr('!isAuthenticated()')}">
+                                     <i class="flaticon-people"></i>
+                                 </div>
 
-        <a class="btn btn-secondary my-2 mr-2 my-sm-0" th:href="@{/account/login}"
-           sec:authorize="!isAuthenticated()">로그인</a>
-        <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/account/register}"
-           sec:authorize="!isAuthenticated()">회원가입</a>
-        <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
-            <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> -->
-            <span class="text-white" sec:authentication="name">사용자</span>
-            <span class="text-white mx-2" sec:authentication="principal.authorities">권한</span>
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
-        </form>
+                                 <div th:if="${#authorization.expr('isAuthenticated()')}">
+                                     <img sec:authorize="hasRole('ROLE_ADMIN')" th:src="@{/img/member(admin).png}" th:width="20" th:height="20">
+                                     <img sec:authorize="hasRole('ROLE_USER')" th:src="@{/img/member.png}" th:width="20" th:height="20">
+                                 </div>
+                             </a>
+                             <div class="add-to-cart-product">
+                                 <div class="cart-checkout">
+                                     <div th:if="${#authorization.expr('!isAuthenticated()')}">
+                                         <a href="member/loginForm.do"> Sign In
+                                             <i class="fa fa-chevron-right"></i>
+                                         </a>
+                                     </div>
+                                     <div th:if="${#authorization.expr('isAuthenticated()')}">
+                                         <a href="member/logOut.do"> Sign Out </a>
+                                     </div>
+                                 </div>
+                                 <div th:if="${#authorization.expr('!isAuthenticated()')}">
+                                     <div class="cart-checkout">
+                                         <a href="member/memberInfo.do"> Sign Up
+                                             <i class="fa fa-chevron-right"></i>
+                                         </a>
+                                     </div>
+                                 </div>
+
+                                 <div th:if="${#authorization.expr('isAuthenticated()')}">
+                                     <div class ="cart-checkout" sec:authorize="hasRole('ROLE_ADMIN')">
+                                         <a th:href="admin/main.do"> Admin Main
+                                             <i class="fa fa-chevron-right"></i>
+                                         </a>
+                                     </div>
+                                 </div>
+                             </div>
+                         </li>
+                         <li class="shoping-cart">
+                             <a href="basket/basketList.do">
+                                 <i class="flaticon-shop"></i>
+                             </a>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ <!--Header Area End-->
+<!-- Mobile Menu Start -->
+<div class="mobile-menu-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="mobile-menu">
+                    <nav id="dropdown">
+                        <ul>
+                            <li>
+                                <a href="main.do">HOME</a>
+                            </li>
+                            <div th:if="${#authorization.expr('!isAuthenticated()')}">
+                                <li>
+                                    <a href="member/loginForm.do">SIGN IN</a>
+                                </li>
+                                <li>
+                                    <a href="member/memberInfo.do">SIGN UP</a>
+                                </li>
+                            </div>
+                            <div th:if="${#authorization.expr('isAuthenticated()')}">
+                                <a href="member/loginOut.do">SIGN OUT</a>
+                            </div>
+                            <li>
+                                <a href="books/booksList.do">NEW BOOKS</a>
+                            </li>
+                            <li>
+                                <a href="books/usedBooksList.do">USED BOOKS</a>
+                            </li>
+                            <li>
+                                <a href="wish/wishList.do">WISH LIST</a>
+                            </li>
+                            <li>
+                                <a href="order/orderListCheckView.do">MY PAGE</a>
+                                <ul>
+                                    <li>
+                                        <a href="order/orderListCheckView.do">Order Status</a>
+                                    </li>
+                                    <li>
+                                        <a href="/member/memberModifyView.do">My Account</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="board/boardList.do">Service Center</a>
+                                <ul>
+                                    <li>
+                                        <a href="board/boardList.do">Q & A</a>
+                                    </li>
+                                    <li>
+                                        <a href="faq/faqList.do">FAQ</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="etc/contact.do">CONTACT</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
-</nav>
+</div>
+
+
+<footer th:fragment="footer">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="bootstrap/js/vendor/jquery-1.12.0.min.js" th:src="@{/bootstrap/js/vendor/jquery-1.12.0.min.js}"></script>
+    <!-- bootstrap js -->
+    <script src="bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <!-- owl.carousel js -->
+    <script src="bootstrap/js/owl.carousel.min.js" th:src="@{/bootstrap/js/owl.carousel.min.js}"></script>
+    <!-- jquery-ui js -->
+    <script src="bootstrap/js/jquery-ui.min.js" th:src="@{/bootstrap/js/jquery-ui.min.js}"></script>
+    <!-- jquery Counterup js -->
+    <script src="bootstrap/js/jquery.counterup.min.js" th:src="@{/bootstrap/js/jquery.counterup.min.js}"></script>
+    <script src="bootstrap/js/waypoints.min.js" th:src="@{/bootstrap/js/waypoints.min.js}"></script>
+    <!-- jquery countdown js -->
+    <script src="bootstrap/js/jquery.countdown.min.js" th:src="@{/bootstrap/js/jquery.countdown.min.js}"></script>
+    <!-- jquery countdown js -->
+    <script type="text/javascript" src="bootstrap/venobox/venobox.min.js" th:src="@{/bootstrap/venobox/venobox.min.js}"></script>
+    <!-- jquery Meanmenu js -->
+    <script src="bootstrap/js/jquery.meanmenu.js" th:src="@{/bootstrap/js/jquery.meanmenu.js}"></script>
+    <!-- wow js -->
+    <script src="bootstrap/js/wow.min.js" th:src="@{/bootstrap/js/wow.min.js}"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <!-- scrollUp JS -->
+    <script src="bootstrap/js/jquery.scrollUp.min.js" th:src="@{/bootstrap/js/jquery.scrollUp.min.js}"></script>
+    <!-- plugins js -->
+    <script src="bootstrap/js/plugins.js" th:src="@{/bootstrap/js/plugins.js}"></script>
+    <!-- Nivo slider js -->
+    <script src="bootstrap/lib/js/jquery.nivo.slider.js" th:src="@{/bootstrap/lib/js/jquery.nivo.slider.js}" type="text/javascript"></script>
+    <script src="bootstrap/lib/home.js" th:src="@{/bootstrap/lib/home.js}" type="text/javascript"></script>
+    <!-- main js -->
+    <script src="bootstrap/js/main.js" th:src="@{/bootstrap/js/main.js}"></script>
+</footer>
 </body>
 </html>
