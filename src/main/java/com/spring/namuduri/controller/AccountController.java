@@ -17,12 +17,12 @@ public class AccountController {
 
     @GetMapping("/login")
     public String login(){
-        return "account/login";
+        return "member/loginForm";
     }
 
     @GetMapping("/register")
     public String register(){
-        return "account/register";
+        return "member/signForm";
     }
 
     @PostMapping("/register")
@@ -30,6 +30,5 @@ public class AccountController {
         userService.save(user);
         return "redirect:/";
     }
-
 
 }

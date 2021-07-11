@@ -1467,7 +1467,7 @@ p.form-row-phone {
 .create-account-form {
   border: 1px solid #cfcfcf;
   min-height: 380px;
-  padding: 36px 17px;
+  padding: 36px 17px 60px 17px;
 }
 .heading-title {
   font-size: 18px;
@@ -1577,7 +1577,7 @@ p.form-row-phone {
   width: 100%;
 }
 .widget-buttom input {
-  width: 40%;
+  width: 100%;
 }
 .widget-buttom input:hover {
   background: #000000 none repeat scroll 0 0;

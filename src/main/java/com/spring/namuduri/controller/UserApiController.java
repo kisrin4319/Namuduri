@@ -59,4 +59,10 @@ class UserApiController {
     void deleteUser(@PathVariable Long id) {
         repository.deleteById(id);
     }
+
+    @GetMapping("/users/exists/{username}")
+    public Boolean checkUserNameDuplicate(@PathVariable String username){
+        System.out.println(username);
+        return repository.existsByUsername(username);
+    }
 }

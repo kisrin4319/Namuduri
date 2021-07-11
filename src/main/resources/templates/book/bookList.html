@@ -1,0 +1,274 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" class="no-js" lang="">
+<head th:replace="fragments/common :: head('BookList')">
+    <!-- Required meta tags -->
+    <meta name="description" content="" charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
+    <title>Shop || Witter Multipage Responsive Template</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="starter-template.css" th:href="@{/starter-template.css}" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,700,600,500,300' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        img.resize {
+            width: 220px;
+            height: 60%;
+        }
+
+        img.top2 {
+            width: 104px;
+            height: 104px;
+        }
+    </style>
+
+</head>
+<body>
+<div th:replace="fragments/common :: menu('')">
+
+</div>
+
+<h2 style="text-align: -webkit-center; padding-top: 30px;">SHOPPING BOOK PAGE</h2>
+<ul class="breadcrumbs-list" style="text-align: -webkit-center;">
+    <li>
+        <a title="Return to Home" href="#" th:href="@{/main}" style="font-style: oblique;">HOME</a>
+    </li>
+    <li>
+        <a title="Go to Basket" href = "#" th:href="@{/basket/basketList}" style="font-style: oblique;">BASKET</a>
+    </li>
+</ul>
+<!-- Shop Area Start -->
+<form name="frmList">
+    <div class="shopping-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="shop-widget">
+                        <div class="shop-widget-top">
+                            <aside class="widget widget-categories">
+                                <h2 class="sidebar-title text-center">CATEGORY</h2>
+                                <ul class="sidebar-menu" style="text-align: left;">
+                                    <li>
+                                        <a href = "#" th:href="@{/book/list(category='short')}">
+                                            <i class="fa fa-angle-double-right"></i>
+                                            short story
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href = "#" th:href="@{/book/list(category='novel')}">
+                                            <i class="fa fa-angle-double-right"></i>
+                                            feature novel
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href = "#" th:href="@{/book/list(category='self')}">
+                                            <i class="fa fa-angle-double-right"></i>
+                                            self-development
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href = "#" th:href="@{/book/list(category='poem')}">
+                                            <i class="fa fa-angle-double-right"></i>
+                                            poem & essay
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href = "#" th:href="@{/book/list(category='job')}">
+                                            <i class="fa fa-angle-double-right"></i>
+                                            job applicants
+                                        </a>
+                                    </li>
+                                </ul>
+                            </aside>
+                            <aside class="widget shop-filter">
+                                <h2 class="sidebar-title text-center">PRICE SLIDER</h2>
+                                <div class="info-widget">
+                                    <div class="price-filter">
+                                        <div id="slider-range"></div>
+                                        <div class="price-slider-amount">
+                                            <input type="text" id="price" name="price" placeholder="Add Your Price" />
+                                            <div class="widget-buttom">
+                                                <input type="button" value="Filter" onclick="fn_slider()" />
+                                                <input type="reset" value="CLEAR" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+                <!-- booksList 부분 -->
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <div class="shop-tab-area">
+                        <div class="shop-tab-list">
+                            <div class="shop-tab-pill pull-left">
+                                <ul>
+                                    <li class="active" id="left">
+                                        <a data-toggle="pill" href="#home">
+                                            <i class="fa fa-th"></i>
+                                            <span>Grid</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="pill" href="#menu1">
+                                            <i class="fa fa-th-list"></i>
+                                            <span>List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="shop-tab-pill pull-right">
+                                <ul>
+                                    <li class="product-size-deatils">
+                                        <form method="get" th:action="@{/book/list}" action="#" class="title-4">
+                                            <select name="option" style="height: 27px; border-color: #5e6b9e; width: 85px; padding-left: 5px; padding-top: 0px; border-top-width: 1px;">
+                                                <option value="0">통합검색</option>
+                                                <option value="1">제목</option>
+                                                <option value="2">저자</option>
+                                                <option value="3">출판사</option>
+                                            </select>
+                                            <input type="text" name="searchText" size="8" th:value="${param.searchText}">
+                                            <button type="submit" style="height: 26px;" class="btn btn-info">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <i class="" th:classappend="${i == books.pageable.pageNumber + 1} ? 'disabled'" th:each="i: ${#numbers.sequence(startPage,endPage)}">
+                                        <a href="#" th:href="@{/books/list(page=${i},searchText=${param.searchText})}" th:text = "${i}"></a>
+                                    </i>
+                                    <i class="fa fa-caret-right">
+                                        <a href="#" th:href = "@{/books/list/(page=${1},searchText=${param.searchText})}">
+                                    </i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <!-- GRID 형식 -->
+                            <div class="row tab-pane fade in active" id="home">
+                                <div class="shop-single-product-area">
+                                    <tr th:each="booklist : ${books}">
+                                        <div class="col-md-4 col-sm-6">
+                                            <div class="single-banner">
+                                                <div class="product-wrapper">
+                                                    <a href="${viewURL}" class="single-banner-image-wrapper">
+                                                        <img class="resize" alt="" th:src="@{/img/img001.jpg}">
+                                                    </a>
+                                                    <div class="product-description">
+                                                        <div class="functional-buttons">
+                                                            <a href="javascript:isBasket(${booklist.id})">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </a>
+                                                            <a href="javascript:isWish(${booklist.id})" title="Add to Wishlist">
+                                                                <i class="fa fa-heart-o"></i>
+                                                            </a>
+                                                            <a class="venobox" th:href = "@{/img/img001.jpg}" data-gall="gallery">
+                                                                <i class="fa fa-compress"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="banner-bottom text-center">
+                                                    <a href="#">
+                                                        <p th:text="${#numbers.formatDecimal(booklist.price,3,0,'COMMA')} +'원'"></p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </div>
+                            </div>
+                            <!--LIST 형식  -->
+                            <div id="menu1" class="tab-pane fade">
+                                <div class="row">
+                                    <tr th:each="booklist : ${books}">
+                                        <div class="single-shop-product col-xs-12" style="height: 280px">
+                                            <div class="col-xs-12 col-sm-5 col-md-4">
+                                                <div class="left-item">
+                                                    <a href="#" th:href="@{/book/form/(id=${booklist.id})}">
+                                                        <img class="resize" th:src = "@{/img/img001.jpg}" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-7 col-md-8">
+                                                <div class="deal-product-content">
+                                                    <h4>
+                                                        <a href="#" th:href="@{/book/form/(id=${booklist.id})}" th:text="${booklist.title}"></a>
+                                                    </h4>
+                                                    <div class="product-price" style="margin-bottom: 5px;">
+                                                        <span class="new-price">
+                                                            <p th:text="${#numbers.formatDecimal(booklist.price,3,0,'COMMA') +'원'}"></p>
+                                                        </span>
+                                                    </div>
+                                                    <h5 th:text="${#numbers.formatDecimal(booklist.price * 0.05,3,0,'COMMA') +'P (5% 적립)'}"></h5>
+                                                    <p th:text="${booklist.auth}"></p>
+                                                    <p th:text="${booklist.company+'['+booklist.publish_date+']'}"></p>
+                                                    <p style="font-style: oblique; font-size: medium;">
+                                                        <a href="javascript:isWish(${booklist.id})">♡ WISH LIST</a>
+                                                    </p>
+                                                    <div class="shopping-cart-area wishlist-bottom-area pull-right" style="float: left !important;">
+                                                        <span>
+                                                            <a href="javascript:isBasket(${list.id});" class="right-shoping-cart" style="font-style: oblique; font-size: small;">ADD TO CART</a>
+                                                        </span>
+                                                        <br />
+                                                        <span>
+                                                            <a href="javascript:isBuy(${list.id});" class="right-shoping-cart" style="font-style: oblique; font-size: small;">BUY NOW</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- Shop Area End -->
+<script type="text/javascript">
+    function isBasket(id) {
+        const isbuy = confirm("장바구니에 담으시겠습니까?");
+        if(isbuy==true) {
+            location.href='/basket/basketInsert.do?basket_id='+id+'&amount='+1;
+        } else {
+            return false;
+        }
+    }
+
+    function isWish(id) {
+        const comment = prompt('Please Enter Your Comment');
+        if (comment == null) return false;
+        location.href='/wish/wishInsert?wish_id=' + id + '&wish_book_count=' + 1 + '&wish_comment=' + comment;
+    }
+
+    function isBuy(id) {
+        const isbuy = confirm("구매 하시겠습니까?");
+        if (isbuy == true) {
+            location.href = '/order/singleOrder?id='+id;
+        } else {
+            return false;
+        }
+    }
+    function fn_slider() {
+        const price = document.getElementById("price").value;
+        if(!price){
+            alert("가격 범위를 정확히 설정 해주세요.");
+            return false;
+        }
+        else
+        {
+            location.href = '/books/bookSlider?price='+price;
+        }
+    }
+</script>
+    <footer th:replace="fragments/common :: footer"></footer>
+</body>
+</html>

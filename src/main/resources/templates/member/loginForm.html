@@ -1,0 +1,86 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang ="en">
+<head th:replace="fragments/common :: head('')">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Shopping Cart || Witter Multipage Responsive Template</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로그인</title>
+</head>
+<body>
+<div th:replace="fragments/common :: menu('')">
+
+</div>
+<!-- Loging Area Start -->
+<div class="login-account section-padding">
+  <div class="container">
+    <div class="row">
+      <div class=" col-lg-12 col-md-12 col-sm-12">
+        <form action="#" th:action="@{/account/login}" class="create-account-form" method="post" name="login">
+          <h2 class="heading-title">L o g i n</h2>
+          <div class="col-sm-12 form-group">
+            <label>User Name</label>
+            <input type="text" placeholder="username.." class="form-control" name="username" id="username">
+          </div>
+          <div class="col-sm-12 form-group">
+            <label>Password</label>
+            <input type="password" placeholder="password.." class="form-control" name="password" id="password">
+          </div>
+          <p class="lost-password form-group">
+            <a href="#" rel="nofollow" onclick="openConfirmId(this.form)">Forgot your id?</a>
+          </p>
+          <p class="lost-password form-group">
+            <a href="#" rel="nofollow" onclick="openConfirmPw(this.form)">Forgot your password?</a>
+          </p>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button type="button" class="btn btn-block btn-info" onclick="check(); return false;">Login</button>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button type="button" class="btn btn-block btn-info" onclick="location.href='@{/account/register}'">Create an account</button>
+            </div>
+          </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Loging Area End -->
+<script type="text/javascript">
+
+  function check() {
+
+    const d = document.login;
+
+    if (d.username.value == "") {
+      alert("아이디를 입력하세요.");
+      d.username.focus();
+      return false;
+    }
+
+    if (d.password.value == "") {
+      alert("비밀번호를 입력하세요.");
+      d.password.focus();
+      return false;
+    } else {
+      d.submit();
+    }
+  }
+
+  function openConfirmId(loginform) {
+    var url = 'http://localhost:8080/namuduri/member/memberIdFindView.do';
+    window.open(url,"confirm","toolbar=no, location=no, status=no, menubar=no," + "scrollbars=no, resizable=no");
+  }
+
+  function openConfirmPw(loginform) {
+    var url = 'http://localhost:8080/namuduri/member/memberPwFindView.do';
+    window.open(url,"confirm","tollbar=no, location=no, status=no, menubar=no," + "scrollbars=no, resizable=no");
+  }
+</script>
+<footer th:replace="fragments/common :: footer"></footer>
+</body>
+</html>

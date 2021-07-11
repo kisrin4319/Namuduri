@@ -1,0 +1,369 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" class="no-js" lang="">
+
+<head th:replace="fragments/common :: head('BookList')">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Product Details || Witter Multipage Responsive Template</title>
+    <meta name="description" content="">
+    <meta name="bookport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        img.resize {
+            width: 270px;
+            height: 370px;
+        }
+
+        img.used {
+            width: 270px;
+            height: 280px;
+        }
+
+        img.soldout {
+            width: 120px;
+            height: 80px;
+        }
+
+        img.star {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="fragments/common :: menu('')">
+    </div>
+
+    <h2 style="text-align: -webkit-center; padding-top: 30px;">SINGLE PRODUCT DETAIL</h2>
+    <ul class="breadcrumbs-list" style="text-align: -webkit-center;">
+        <li>
+            <a title="Return to Home" href="#" th:href="@{/main}">Home</a>
+        </li>
+        <li>
+            <a title="Go to Basket" href="#" th:href="@{/book/List}">List</a>
+        </li>
+    </ul>
+    <hr>
+    <div class="single-product-area section-padding">
+        <div class="container">
+            <form action="#" th:action="@{/board/form}" th:object="${book}" method="post" th:name = "form">
+                <input type="hidden" name="basket_id" value="${book.id}" />
+                <!-- <input type="hidden" name="category" value="${book.category}" />
+                <input type="hidden" name="name" value="${book.name}" />
+                <input type="hidden" name="price" value="${book.price}" />
+                <input type="hidden" name="image" value="${book.image}" /> -->
+                <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                    <div class="col-md-6 col-sm-7" style="width: 370px;">
+                        <div class="single-product-image-inner">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="one">
+                                    <a class="venobox" href="/img/img001.jpg" data-gall="gallery" title="">
+                                        <img class="resize" src="/img/img001.jpg" th:alt="${book.title}">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-5">
+                        <div class="single-product-details">
+                            <h3 style="margin-bottom: 5px;" th:text = "${book.title}"></h3>
+                            <p style="margin-bottom: 5px;" th:text = "${book.auth +'/' + book.company}"></p>
+                            <div class="single-product-price" style="height: 60px;">
+                                <h4>
+                                    <p th:text="${#numbers.formatDecimal(book.price,3,0,'COMMA')} +'원'"></p>
+                                </h4>
+                                <h5 style="font-style: inherit;">
+                                    <p th:text="${'P ' + #numbers.formatDecimal(book.price * 0.05,3,0,'COMMA')} +'(5% 적립)'"></p>
+                                </h5>
+                            </div>
+                            <div class="product-attributes clearfix">
+                                <span class="pull-left" id="quantity-wanted-p">
+                                    <span class="dec qtybutton">-</span>
+                                    <input type="text" value="1" class="cart-plus-minus-box" name="amount" maxlength="3" min="1" max="99" />
+                                    <span class="inc qtybutton">+</span>
+                                    <br />
+                                </span>
+                            </div>
+                            <div class="product-attributes clearfix">
+                                <span>
+                                    <a class="cart-btn btn-default"
+                                        href="javascript:javascript:isBuy(${book.id});">
+                                        <i class="flaticon-shop">BUY NOW</i>
+                                    </a>
+                                    <br />
+                                    <a class="cart-btn btn-default" href="javascript:isBasket(${book.id});"
+                                        style="margin-top: 5px;">
+                                        <i class="flaticon-shop">ADD TO CART</i>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="add-to-wishlist">
+                                <a class="wish-btn" href="javascript:isWish(${book.id})">
+                                    <i class="fa fa-heart-o">ADD TO WISHLIST</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row" style="transform: translateX(10%);">
+            <div class="col-md-9">
+                <div class="p-details-tab-content">
+                    <div class="p-details-tab">
+                        <ul class="p-details-nav-tab" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#" aria-controls="more-info" role="tab" data-toggle="tab">상품정보</a>
+                            </li>
+                            <li role="presentation">
+                                <a aria-controls="data">회원리뷰</a>
+                            </li>
+                            <li role="presentation">
+                                <a aria-controls="rebooks">교환/반품</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="tab-content rebook">
+                        <div role="tabpanel" class="tab-pane active">
+                            <p th:text="${book.content}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="p-details-tab-content">
+                    <div class="p-details-tab">
+                        <ul class="p-details-nav-tab" role="tablist" id="rebook">
+                            <li role="presentation">
+                                <a aria-controls="data">상품정보</a>
+                            </li>
+                            <li role="presentation" class="active">
+                                <a href="#rebook" aria-controls="data" role="tab" data-toggle="tab">회원리뷰</a>
+                            </li>
+                            <li role="presentation">
+                                <a aria-controls="data">교환/반품</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane">
+                    <table class="table-data-sheet">
+                        <colgroup>
+                            <!-- <col width="13%" /> -->
+                            <col width="" />
+                            <col width="10%" />
+                            <col width="10%" />
+                        </colgroup>
+                        <thead>
+                            <tr class="odd">
+                                <!-- <th style="text-align: center;">평점</th> -->
+                                <th style="text-align: center;">내용</th>
+                                <th style="text-align: center;">작성자</th>
+                                <th style="text-align: center;">작성일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ul class="comments-advices">
+                                <li>
+                                    <a href="javascript:openWriteForm()" class="open-comment-form">리뷰쓰기</a>
+                                </li>
+                            </ul>
+                        </tbody>
+                    </table>
+                    <!-- <ul class="pager" style="text-align: right;">
+                        <li><a href="bookDetail.do?currentPage=${currentPage-1}&id=${book.id}">＜</a></li>
+                        ${pagingHtml}
+                        <li><a href="bookDetail.do?currentPage=${currentPage+1}&id=${book.id}">＞</a></li>
+                    </ul> -->
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="p-details-tab-content">
+                    <div class="p-details-tab">
+                        <ul class="p-details-nav-tab" role="tablist" id="guide">
+                            <li role="presentation">
+                                <a aria-controls="data">상품정보</a>
+                            </li>
+                            <li role="presentation">
+                                <a aria-controls="data">회원리뷰</a>
+                            </li>
+                            <li role="presentation" class="active">
+                                <a href="#guide" aria-controls="rebooks" role="tab" data-toggle="tab">교환/반품</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane">
+                    <table class="table-data-sheet">
+                        <colgroup>
+                            <col width="22%" />
+                            <col width="*" />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="row" style="text-align: center;">반품/교환방법</th>
+                                <td>
+                                    <strong>
+                                        마이룸 &gt; 주문관리 &gt; 주문/배송내역 &gt; 주문조회 &gt;
+                                        <a th:href="@{/board/list}">반품/교환신청</a>
+                                        ,
+                                        <br />
+                                        <a th:href="@{/board/list}">[1:1상담&gt;반품/교환/환불]</a>
+                                        또는 고객센터 (1544-1900)
+                                    </strong>
+                                    <br />
+                                    ※ 오픈마켓, 해외배송주문, 기프트 주문시
+                                    <a th:href="@{/board/list}">[1:1상담&gt;반품/교환/환불]</a>
+                                    또는 고객센터 (1544-1900)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" style="text-align: center;">반품/교환가능 기간</th>
+                                <td>
+                                    변심반품의 경우 수령 후 7일 이내,
+                                    <br />
+                                    상품의 결함 및 계약내용과 다를 경우 문제점 발견 후 30일 이내
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" style="text-align: center;">반품/교환비용</th>
+                                <td>변심 혹은 구매착오로 인한 반품/교환은 반송료 고객 부담</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" style="text-align: center;">반품/교환 불가 사유</th>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            소비자의 책임 있는 사유로 상품 등이 손실 또는 훼손된 경우
+                                            <br />
+                                            (단지 확인을 위한 포장 훼손은 제외)
+                                        </li>
+                                        <li>
+                                            소비자의 사용, 포장 개봉에 의해 상품 등의 가치가 현저히 감소한 경우
+                                            <br />
+                                            예) 화장품, 식품, 가전제품(악세서리 포함) 등
+                                        </li>
+                                        <li>
+                                            복제가 가능한 상품 등의 포장을 훼손한 경우
+                                            <br />
+                                            예) 음반/DVD/비디오, 소프트웨어, 만화책, 잡지, 영상 화보집
+                                        </li>
+                                        <li>소비자의 요청에 따라 개별적으로 주문 제작되는 상품의 경우 ((1)해외주문도서)</li>
+                                        <li>디지털 컨텐츠인 eBook, 오디오북 등을 1회 이상 다운로드를 받았을 경우</li>
+                                        <li>시간의 경과에 의해 재판매가 곤란한 정도로 가치가 현저히 감소한 경우</li>
+                                        <li>전자상거래 등에서의 소비자보호에 관한 법률이 정하는 소비자 청약철회 제한 내용에 해당되는 경우</li>
+                                    </ul>
+                                    (1) 해외주문도서 : 이용자의 요청에 의한 개인주문상품으로 단순변심 및 착오로 인한 취소/교환/반품 시 ‘해외주문 반품/취소 수수료’ 고객 부담
+                                    (해외주문
+                                    반품/취소 수수료 : ①양서-판매정가의 12%, ②일서-판매정가의 7%를 적용)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" style="text-align: center;">상품 품절</th>
+                                <td>
+                                    공급사(출판사) 재고 사정에 의해 품절/지연될 수 있으며,
+                                    <br />
+                                    품절 시 관련 사항에 대해서는 이메일과 문자로 안내드리겠습니다.
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" style="text-align: center;">
+                                    소비자 피해보상
+                                    <br />
+                                    환불지연에 따른 배상
+                                </th>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            상품의 불량에 의한 교환, A/S, 환불, 품질보증 및 피해보상 등에 관한 사항은
+                                            <br />
+                                            소비자분쟁해결 기준 (공정거래위원회 고시)에 준하여 처리됨
+                                        </li>
+                                        <li>
+                                            대금 환불 및 환불지연에 따른 배상금 지급 조건, 절차 등은 전자상거래 등에서의
+                                            <br />
+                                            소비자 보호에 관한 법률에 따라 처리함
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+    <!-- Single Product Area End -->
+    <!-- Related Product Area Start -->
+    <div class="related-product-area">
+        <h2 class="section-title">USED BOOKS</h2>
+        <div class="container">
+            <div class="row">
+                <div class="related-product indicator-style">
+                    <tr th:each="usedbook : ${usedbook}">
+                    <c:forEach var="used" items="${used}">
+                        <div class="col-md-3">
+                            <div class="single-banner">
+                                <div class="product-wrapper">
+                                    <a th:href="@{/usedbooks/list/${usedbook.id}}"
+                                        class="single-banner-image-wrapper">
+                                        <img alt="" src="/img/img001.jpg"class="used">
+                                    </a>
+                                </div>
+                                <div class="banner-bottom text-center">
+                                    <a href="#">
+                                        <p th:text="${#numbers.formatDecimal(usedbook.price,3,0,'COMMA')} +'원'"></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Related Product Area End -->
+    <script type="text/javascript">
+
+         function isBasket(id) {
+             const isbuy = confirm("장바구니에 담으시겠습니까?");
+             const product = eval("document.form");
+             const amount = document.form.amount.value;
+             if (isbuy == true) {
+                 document.form.action = '/basket/Insert?id=' + id + '&amount=' + amount;
+                 product.submit();
+             } else {
+                 return false;
+             }
+         }
+
+        function isBuy(id) {
+            const amount = document.form.amount.value;
+            const isbuy = confirm("구매하시겠습니까?");
+            if (isbuy == true) {
+                 window.location.href = '/order/singleOrder?id=' + id + '&count=' + amount;
+             } else {
+                 return;
+             }
+         }
+
+         function isWish(id) {
+             const comment = prompt('Please Enter Your Comment');
+             const amount = document.form.amount.value;
+             if (comment == null) return false;
+             window.location.href = '<%=cp%>/wish/wishInsert.do?wish_id=' + id + '&wish_count=' + amount + '&wish_comment=' + comment;
+         }
+
+        // function openMap() {
+        //     var url = '<%=cp%>/common/openMap.do';
+        //     window.open(url, "openMap", "toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=900, height=800")
+        // }
+    </script>
+    <footer th:replace="fragments/common :: footer"></footer>
+</body>
+
+</html>

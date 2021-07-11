@@ -17,7 +17,7 @@ public class Book {
     private Long id;
 
     private String category; // 도서 카테고리
-    private String name; // 도서 이름
+    private String title; // 도서 제목
     private String content; // 도서 내용
     private int price; // 도서 가격
     private String image; //도서 이미지

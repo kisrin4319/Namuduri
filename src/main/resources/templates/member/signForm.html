@@ -1,0 +1,150 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang ="en">
+<head th:replace="fragments/common :: head('')">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>회원가입 폼</title>
+</head>
+<body>
+  <div th:replace="fragments/common :: menu('')">
+
+  </div>
+
+<!-- Breadcrumbs Area Start -->
+
+<h2 style="text-align: -webkit-center; padding-top: 30px;">&nbsp;SIGN UP PAGE</h2>
+<ul class="breadcrumbs-list" style="text-align: -webkit-center;">
+  <li>
+    <a title="Return to Home" href="main" th:href = "@{/main}" style="font-style: oblique;">HOME</a>
+  </li>
+  <li>
+    <a title="Go to Login" href="member/loginForm" th:href="@{member/loginForm}" style="font-style: oblique;">LOGIN</a>
+  </li>
+</ul>
+<!-- Breadcrumbs Area Start -->
+<!-- Loging Area Start -->
+<div class="login-account section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-pjh-1 col-sm-12" style="width: 100%;">
+        <form class="create-account-form" action="#" th:action="@{/account/register}" th:object="${user}" method="post" name="userInfo" onsubmit="return check()">
+          <h2 class="heading-title">J O I N</h2>
+          <h3 class="bul_green02">Enter information</h3>
+          <p class="font_11">The information you entered will not be saved until you complete your subscription.</p>
+          <p class="font_11 margin_top5" style="color: #5282ca;">
+            The member information you enter without collecting the resident registration number is very valuable information that identifies the member.
+            <br />
+            Please enter the latest information exactly as it will be used as your personal information for ID and password search
+          </p>
+          <p align="center">
+          <h4 class="h4_member margin_top15" style="margin-top: 25px;">Required Fields</h4>
+          <div>
+            <!-- 아이디============================================================================== -->
+            <p class="form-row">
+              <input type="text" placeholder="ID" id="username" name="username" th:focusout="|checkId()|">
+            </p>
+            <div id="checkMsg"></div>
+            <!-- 비밀번호============================================================================== -->
+            <p class="form-row">
+              <input type="password" id="password" name="password" placeholder="password">
+            </p>
+            <!-- 비밀번호 확인============================================================================== -->
+            <p class="form-row">
+              <input type="password" id="passwordCheck" placeholder="PASSWORD CONFIRM" onkeyup="passWorkCheck();" />              &nbsp;
+              <span id="passwordCheckText"></span>
+            </p>
+            <!-- 이메일============================================================================== -->
+            <p class="form-row">
+                <input type="text" id="email" name="email" placeholder="E-MAIL">
+            </p>
+          <div class="subtotal-main-area">
+            <a type="button" class="btn btn-primary" th:href="@{/main}">CANCLE</a>
+            <a href="javascript:check();" class="signupbtn">SIGN UP</a>
+          </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Loging Area End -->
+  <footer th:replace="fragments/common :: footer"></footer>
+</body>
+<script language="javascript">
+
+  //아이디와 비밀번호가 맞지 않을 경우 가입버튼 비활성화를 위한 변수설정
+  let idCheck = 0;
+
+  //아이디 체크하여 가입버튼 비활성화, 중복확인.
+  function checkId()
+  {
+    const username = $('#username').val();
+
+    if(username === ""){
+      $("#username").css("background-color", "");
+      return;
+    }
+
+    $.ajax({
+      data : {
+        username : username
+      },
+      url : "/api/users/exists/"+username,
+      success : function(data) {
+
+        if (data == '0') {
+          $("#username").css("background-color", "#B0F6AC");
+          $(".signupbtn").css("display","block");
+          $(".signupbtn").css("background-color","#32b5f3");
+        } else if (data == '1') {
+          $(".signupbtn").prop("disabled", true);
+          $(".signupbtn").css("background-color", "#aaaaaa");
+          $("#username").css("background-color", "#FFCECE");
+          $(".signupbtn").css("display","none");
+        }
+      }
+    });
+  }
+
+  function passWorkCheck(){
+    const password = document.getElementById("password").value;
+    const passwordCheck = document.getElementById("passwordCheck").value;
+
+    if(passwordCheck == ""){
+      document.getElementById("passwordCheckText").innerHTML = ""
+    } else if (password != passwordCheck) {
+      document.getElementById("passwordCheckText").innerHTML = "<b><font color=red size=2pt> Wrong password. </font></b>"
+    } else {
+      document.getElementById("passwordCheckText").innerHTML = "<b><font color=blue size=2pt> Passwords match. </font></b>"
+    }
+  }
+
+  function check() {
+    var f = document.userInfo;
+
+    if(f.username.value == ""){
+      alert("아이디를 입력해주십시오.");
+      f.username.focus();
+    }
+    else if(f.password.value == ""){
+      alert("비밀번호를 입력해주십시오.");
+      f.password.focus();
+
+    }
+    else if(f.passwordCheck.value === ""){
+      alert("비밀번호를 입력해주십시오.");
+      f.passwordCheck.focus();
+
+    }
+    else if(f.email.value == ""){
+      alert("이메일을 입력해주십시오.");
+      f.email.focus();
+
+    }
+    else {
+      alert("회원가입 되었습니다.")
+      f.action="/account/register";
+      f.submit();
+    }
+  }
+</script>
+</html>

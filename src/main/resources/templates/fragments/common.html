@@ -57,7 +57,7 @@
         <div class="row">
             <div class="col-md-2 col-sm-6 col-xs-6">
                 <div class="header-logo">
-                    <a href="main.do">
+                    <a href="#" th:href="@{/}">
                         <img src="img/headerLogo.png" th:src="@{/bootstrap/img/headerLogo.png}" alt="">
                     </a>
                 </div>
@@ -115,7 +115,7 @@
                      <nav>
                          <ul id="nav">
                              <li>
-                                 <a href="books/booksList.do">NEW BOOKS</a>
+                                 <a th:href ="@{/book/list}" href="#">NEW BOOKS</a>
                              </li>
                              <li>
                                  <a href="books/usedBooksList.do">USED BOOKS</a>
