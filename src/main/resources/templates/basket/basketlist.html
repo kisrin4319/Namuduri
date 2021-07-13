@@ -1,0 +1,211 @@
+<!doctype html>
+<html class="no-js" lang="" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head('Shopping Cart')">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Shopping Cart || Witter Multipage Responsive Template</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
+
+</nav>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<!-- Add your site or application content here -->
+<h2 style="text-align: -webkit-center; padding-top: 30px;">SHOPPING CART</h2>
+<ul class="breadcrumbs-list" style="text-align: -webkit-center;">
+    <li>
+        <a title="Return to Home" href="#" th:href="@{/main}" style="font-style: oblique;">HOME</a>
+    </li>
+    <li>
+        <a title="Go to Wishlist" href="#" th:href="@{/wish/wishList}" style="font-style: oblique;">Wishlist</a>
+    </li>
+</ul>
+<!-- Cart Area Start -->
+<div class="shopping-cart-area section-padding" style="padding-top: 20px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wishlist-table-area table-responsive">
+                    <form name="basketform" id="basketform">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="product-edit">
+                                    <div class="checkbox checkbox-primary">
+                                        <input type="checkbox" id="checkbox2" name="AllCheck" th:attr="onchange=|fn_checkSum()|" />
+                                        <label for="checkbox2"> All Check </label>
+                                    </div>
+                                </th>
+                                <th class="product-image">Image</th>
+                                <th class="t-product-name">Product Name</th>
+                                <th class="product-unit-price">Unit Price</th>
+                                <th class="product-edit">Category</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-subtotal">Subtotal</th>
+                                <th class="product-edit">Buy Now</th>
+                                <th class="product-remove">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <div th:if="${basket.size} != 0">
+                                <tr th:each="basket,index : ${basket}">
+                                    <!--<th th:text="${basket.id}">Mark</th>
+                                    <td><a th:text="${basket.book.title}" th:href="@{/board/form(id=${basket.id})}"></a></td>
+                                    <td th:text="${basket.book.title}">홍길동</td>-->
+                                    <td class="product-edit">
+                                        <div class="checkbox checkbox-primary">
+                                                <p>
+                                                    <input type="checkbox" name="RowCheck" th:value="${basket.book.price * basket.count }" th:attr="onchange=|fn_checkSum()|"  />
+                                                    <label for="checkbox"></label>
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td class="product-image">
+                                            <a href="#" th:attr="onclick=|fn_bookDetail(${basket.book.id})|">
+                                                <img th:src="@{/img/img001.jpg}" alt="" width="104px" height="104px">
+                                            </a>
+                                        </td>
+                                        <td class="t-product-name">
+                                            <h3>
+                                                <a th:attr="onclick=|fn_bookDetail(${basket.book.id})|" th:text ="${basket.book.title}" ></a>
+                                            </h3>
+                                        </td>
+                                        <td class="product-unit-price">
+                                            <p th:text="${#numbers.formatDecimal(basket.amt,3,0,'COMMA')} +'원'"></p>
+                                        </td>
+                                        <!--<td class="product-edit">
+                                            <p>${row.book_category }</p>
+                                        </td>-->
+                                        <td class="product-quantity product-cart-details">
+                                            <input type="text" name="book_count" maxlength="2" th:id="${basket.id}" th:value="${basket.count}" size="1" onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' style='ime-mode: disabled; ' />
+                                            <button type="button" class="btn-info" onclick="fn_basketModify(${row.basket_num})" style="background-color:#32b5f3;">
+                                                <em>EDIT</em>
+                                            </button>
+                                        </td>
+                                        <td class="product-quantity">
+                                            <p th:text="${#numbers.formatDecimal(basket.amt,3,0,'COMMA')} +'원'"></p>
+                                        </td>
+                                        <td class="product-edit">
+                                            <p>
+                                                <a href="javascript:;" onclick="singleOrder(${row.basket_book_num}, ${row.basket_book_count}, ${row.basket_num})" class="right-shoping-cart">BUY NOW</a>
+                                            </p>
+                                        </td>
+                                        <td class="product-remove">
+                                            <a href="javascript:;" onclick="fn_basketDelete(${row.basket_num})">
+                                                <i class="flaticon-delete"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </div>
+                            </tbody>
+                            <div th:if ="${basket.size == 0 }">
+                                <strong>
+                                    <font size="3">장바구니에 담겨있는 상품이 없습니다.</font>
+                                </strong>
+                            </div>
+                        </table>
+                    </form>
+                </div>
+                <div class="shopingcart-bottom-area">
+                    <a class="left-shoping-cart" href="javascript:;">CONTINUE SHOPPING</a>
+                    <div class="shopingcart-bottom-area pull-right">
+                        <a class="right-shoping-cart" href="javascript:;" id="deleteAll">CLEAR SHOPPING CART</a>
+                        <a class="right-shoping-cart" href="javascript:;" onclick="fn_selectDelete()">CLEAR SELECTED SHOPPING CART</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Area End -->
+<!-- Discount Area Start -->
+<div class="discount-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="discount-main-area">
+                    <div class="discount-top">
+                        <h3>DISCOUNT CODE</h3>
+                        <p>Enter your coupon code if have one</p>
+                    </div>
+                    <div class="discount-middle">
+                        <input type="text" placeholder="" id="coupon_code" name="coupon_code">
+                        <a class="" href="javscript:;" onclick="couponCheck(); this.onclick='';">APPLY COUPON</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="subtotal-main-area">
+                    <div class="subtotal-area">
+                        <h2>
+                            SUBTOTAL
+                            <span>
+                                <input type="text" th:id="SubTotal" th:value="0" style="border: 0; font-size: x-large; text-align: center; vertical-align: baseline; font-weight: unset;" size="6" readOnly />원
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="subtotal-area">
+                        <input type="hidden" id="fee" value="0" size="4" />
+                        <h2>
+                            GRAND TOTAL
+                            <span>
+									<input type="text" id="sum" value="0" style="border: 0; font-size: x-large; text-align: center; vertical-align: baseline; font-weight: unset;" size="6" readOnly />
+									원
+								</span>
+                        </h2>
+                    </div>
+                    <c:if test="${basketList.size() ne 0 }">
+                        <a href="javascript:;" onclick="fn_selectOrder()">SELECTED CHECKOUT</a>
+                        <a href="javascript:;" onclick="fn_totalOrder()">CHECKOUT</a>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Discount Area End -->
+<script src="<%=cp%>/bootstrap/js/custom.js"></script>
+<script type="text/javascript">
+    function couponCheck() {
+
+        var inputed = $("#coupon_code").val();
+        c_code.value = inputed;
+        $.ajax({
+            data : {
+                coupon_code : inputed
+            },
+            url : "<%=cp%>/coupon/couponCheck.do",
+            success : function(data){
+                if(data != "0"){
+                    couponUse();
+                }
+            }
+        });
+    }
+    function couponUse() {
+        var inputed = $("#coupon_code").val();
+        $.ajax({
+            data :{
+                coupon_code : inputed
+            },
+            url : "<%=cp%>/coupon/couponUse.do",
+            success : function(data) {
+                if(sum.value-data < 0){
+                    alert("할인 쿠폰을 적용할수 없습니다.");
+                } else{
+                    var x = sum.value.replace(/,/g,'');
+
+                    sum.value = parseInt(x)-data;
+                    fn_format(sum);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

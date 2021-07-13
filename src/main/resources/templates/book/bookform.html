@@ -87,19 +87,17 @@
                             </div>
                             <div class="product-attributes clearfix">
                                 <span>
-                                    <a class="cart-btn btn-default"
-                                        href="javascript:javascript:isBuy(${book.id});">
+                                    <a class="cart-btn btn-default" th:attr="onclick=|isBuy(${book.id})|">
                                         <i class="flaticon-shop">BUY NOW</i>
                                     </a>
                                     <br />
-                                    <a class="cart-btn btn-default" href="javascript:isBasket(${book.id});"
-                                        style="margin-top: 5px;">
+                                    <a class="cart-btn btn-default" th:attr="onclick=|isBasket(${book.id})|">
                                         <i class="flaticon-shop">ADD TO CART</i>
                                     </a>
                                 </span>
                             </div>
                             <div class="add-to-wishlist">
-                                <a class="wish-btn" href="javascript:isWish(${book.id})">
+                                <a class="wish-btn" th:attr="onclick=|isWish(${book.id})|">
                                     <i class="fa fa-heart-o">ADD TO WISHLIST</i>
                                 </a>
                             </div>
@@ -167,16 +165,36 @@
                         <tbody>
                             <ul class="comments-advices">
                                 <li>
-                                    <a href="javascript:openWriteForm()" class="open-comment-form">리뷰쓰기</a>
+                                    <a href="#" th:attr="onclick=|openWriteForm(${book.id})|" class="open-comment-form">리뷰쓰기</a>
                                 </li>
-                            </ul>
+                                <div th:switch="${reviews.totalElements}">
+                                    <tr class="even" th:case="0">
+                                        <td colspan="4" class = "no-data" style="text-align: center">등록된 상품 후기가 없습니다.</td>
+                                    </tr>
+
+                                    <tr class="even" th:case="*" th:each="review : ${reviews}">
+                                        <td style="text-align: center">
+                                            <span>
+                                                <a href ="#" th:href="|void(0)|" class = "js-btn-view" th:text="${review.content}"></a>
+                                            </span>
+                                        </td>
+                                        <td th:text="${review.user.username}"></td>
+                                        <td th:text="${review.regdate}"></td>
+                                    </tr>
+                                </div>
                         </tbody>
                     </table>
-                    <!-- <ul class="pager" style="text-align: right;">
-                        <li><a href="bookDetail.do?currentPage=${currentPage-1}&id=${book.id}">＜</a></li>
-                        ${pagingHtml}
-                        <li><a href="bookDetail.do?currentPage=${currentPage+1}&id=${book.id}">＞</a></li>
-                    </ul> -->
+                     <ul class="pager" style="text-align: right;">
+                         <li class="page-item" th:classappend="${1 == reviews.pageable.pageNumber + 1} ? 'disabled'">
+                             <a class="page-link" href="#" th:href="@{/book/list(page=${reviews.pageable.pageNumber -1},book_id=${param.book_id})}" tabindex="-1" aria-disabled="true">Previous</a>
+                         </li>
+                         <li class="page-item" th:classappend="${i == reviews.pageable.pageNumber + 1} ? 'disabled'" th:each="i: ${#numbers.sequence(startPage,endPage)}">
+                             <a class="page-link" href="#" th:href="@{/book/list(page=${i - 1},book_id=${param.book_id})}" th:text = "${i}"></a>
+                         </li>
+                         <li class="page-item" th:classappend="${reviews.totalPages == reviews.pageable.pageNumber + 1} ? 'disabled'">
+                             <a class="page-link" href="#" th:href="@{/book/list(page=${reviews.pageable.pageNumber +1},book_id=${param.book_id})}">Next</a>
+                         </li>
+                    </ul>
                 </div>
             </div>
             <div class="col-md-9">
@@ -328,7 +346,10 @@
     </div>
     <!-- Related Product Area End -->
     <script type="text/javascript">
-
+        function openWriteForm(id) {
+            const zipUrl = 'http://localhost:8080/namuduri/book/review?id'+id;
+            window.open(zipUrl,"confirm","toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=825, height=670");
+        }
          function isBasket(id) {
              const isbuy = confirm("장바구니에 담으시겠습니까?");
              const product = eval("document.form");

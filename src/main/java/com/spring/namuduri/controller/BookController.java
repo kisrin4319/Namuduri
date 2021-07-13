@@ -1,7 +1,9 @@
 package com.spring.namuduri.controller;
 
 import com.spring.namuduri.model.Book;
+import com.spring.namuduri.model.Review;
 import com.spring.namuduri.repository.BookRepository;
+import com.spring.namuduri.repository.ReviewRepository;
 import com.spring.namuduri.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,9 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private ReviewRepository reviewRepository;
+
     /*
     @Autowired
     private BookValidator bookValidator;
@@ -36,6 +41,7 @@ public class BookController {
                        @RequestParam(required = false,defaultValue = "") String category, @RequestParam(required = false,defaultValue = "0") String option){
         //Page<Book> books = bookRepository.findAll(pageable);
         Page<Book> books;
+
         if(category.equals("")) {
             if(option.equals("0")){ //통합
                 books = bookRepository.findByTitleContainingOrAuthContainingOrCompanyContaining(searchText,searchText,searchText, pageable);
@@ -51,12 +57,9 @@ public class BookController {
             books = bookRepository.findByCategoryContaining(category,pageable);
         }
 
-        return getString(model, books);
-    }
-
-    private String getString(Model model, Page<Book> books) {
         int startPage = Math.max(1,books.getPageable().getPageNumber() - 10);
         int endPage   = Math.min(books.getTotalPages(),books.getPageable().getPageNumber() + 10);
+
         model.addAttribute("startPage",startPage);
         model.addAttribute("endPage",endPage);
         model.addAttribute("books",books);
@@ -64,9 +67,9 @@ public class BookController {
     }
 
 
-
     @GetMapping("/form")
-    public String form(Model model,@RequestParam(required = false) Long id){
+    public String form(Model model,@PageableDefault(size = 10) Pageable pageable,@RequestParam(required = false) Long id){
+
 
         if(id == null){
             model.addAttribute("book", new Book());
@@ -74,6 +77,15 @@ public class BookController {
             Book book = bookRepository.findById(id).orElse(null);
             model.addAttribute("book",book);
         }
+       // Page<Review> reviews = reviewRepository.findByBook_id(id,pageable);
+/*
+        int startPage = Math.max(1,reviews.getPageable().getPageNumber() - 10);
+        int endPage   = Math.min(reviews.getTotalPages(),reviews.getPageable().getPageNumber() + 10);
+
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage",endPage);
+        model.addAttribute("reviews",reviews);*/
+
         return "/book/bookform";
     }
     @PostMapping("/form")

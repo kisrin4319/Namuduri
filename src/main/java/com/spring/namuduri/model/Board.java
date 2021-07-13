@@ -20,7 +20,7 @@ public class Board {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn
     @JsonIgnore
     private User user;
 }
