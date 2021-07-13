@@ -27,12 +27,12 @@ public class Review {
 
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="user_id",referencedColumnName = "id",insertable = false,updatable = false)
     @JsonIgnore
-    private User userReview;
+    private User user;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="book_id",referencedColumnName = "id",insertable = false,updatable = false)
     @JsonIgnore
-    private Book bookReview;
+    private Book book;
 }

@@ -25,4 +25,5 @@ public class Book {
     private Date book_date; // 도서 등록 날짜
     private String company; // 출판사 이름
     private String auth; // 도서 작가
+
 }

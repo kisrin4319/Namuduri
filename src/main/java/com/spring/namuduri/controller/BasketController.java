@@ -24,9 +24,9 @@ public class BasketController {
 
     @GetMapping("/list")
     public String List(Model model, @RequestParam(required = false) Long userId){
-        List<Basket> baskets = basketRepository.findBasketByUserId(userId);
-        model.addAttribute("baskets",baskets);
-        model.addAttribute("size",baskets.size());
+        List<Basket> basket = basketRepository.findBasketByUserId(userId);
+        model.addAttribute("basket",basket);
+        model.addAttribute("size",basket.size());
         return "basket/basketlist";
     }
 

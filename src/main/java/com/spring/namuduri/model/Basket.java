@@ -23,7 +23,12 @@ public class Basket {
     private Long amt; //장바구니의 상품 가격
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="user_id",referencedColumnName = "id",insertable = false,updatable = false)
     @JsonIgnore
-    private User userBasket;
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name="book_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @JsonIgnore
+    private Book book;
 }

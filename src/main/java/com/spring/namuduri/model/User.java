@@ -41,11 +41,11 @@ public class User {
     private List<Board> boards = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "userBasket", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Basket> baskets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userReview",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
