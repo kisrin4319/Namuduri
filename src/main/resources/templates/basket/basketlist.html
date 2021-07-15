@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('basket')">
 
 </nav>
 <!--[if lt IE 8]>
@@ -18,7 +18,7 @@
 <h2 style="text-align: -webkit-center; padding-top: 30px;">SHOPPING CART</h2>
 <ul class="breadcrumbs-list" style="text-align: -webkit-center;">
     <li>
-        <a title="Return to Home" href="#" th:href="@{/main}" style="font-style: oblique;">HOME</a>
+        <a title="Return to Home" href="#" th:href="@{/}" style="font-style: oblique;">HOME</a>
     </li>
     <li>
         <a title="Go to Wishlist" href="#" th:href="@{/wish/wishList}" style="font-style: oblique;">Wishlist</a>
@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="wishlist-table-area table-responsive">
-                    <form name="basketform" id="basketform">
+                        <form action="#" th:action="@{/basket/form}" th:object="${basket}" method="post">
                         <table>
                             <thead>
                             <tr>
@@ -43,7 +43,7 @@
                                 <th class="product-image">Image</th>
                                 <th class="t-product-name">Product Name</th>
                                 <th class="product-unit-price">Unit Price</th>
-                                <th class="product-edit">Category</th>
+                                <!--<th class="product-edit">Category</th>-->
                                 <th class="product-quantity">Quantity</th>
                                 <th class="product-subtotal">Subtotal</th>
                                 <th class="product-edit">Buy Now</th>
@@ -53,6 +53,9 @@
                             <tbody>
                             <div th:if="${basket.size} != 0">
                                 <tr th:each="basket,index : ${basket}">
+                                    <input th:type="hidden" th:name = "id"     th:value="${basket.id}">
+                                    <input th:type="hidden" th:name = "userId" th:value="${basket.user.id}">
+                                    <input th:type="hidden" th:name = "bookId" th:value="${basket.book.id}">
                                     <!--<th th:text="${basket.id}">Mark</th>
                                     <td><a th:text="${basket.book.title}" th:href="@{/board/form(id=${basket.id})}"></a></td>
                                     <td th:text="${basket.book.title}">홍길동</td>-->
@@ -65,24 +68,24 @@
                                             </div>
                                         </td>
                                         <td class="product-image">
-                                            <a href="#" th:attr="onclick=|fn_bookDetail(${basket.book.id})|">
+                                            <a href="#" th:href = "@{/book/form(id = ${basket.book.id})}">
                                                 <img th:src="@{/img/img001.jpg}" alt="" width="104px" height="104px">
                                             </a>
                                         </td>
                                         <td class="t-product-name">
                                             <h3>
-                                                <a th:attr="onclick=|fn_bookDetail(${basket.book.id})|" th:text ="${basket.book.title}" ></a>
+                                                <a th:href = "@{/book/form(id = ${basket.book.id})}" th:text ="${basket.book.title}" ></a>
                                             </h3>
                                         </td>
                                         <td class="product-unit-price">
-                                            <p th:text="${#numbers.formatDecimal(basket.amt,3,0,'COMMA')} +'원'"></p>
+                                            <p th:text="${#numbers.formatDecimal(basket.book.price,3,0,'COMMA')} +'원'"></p>
                                         </td>
                                         <!--<td class="product-edit">
                                             <p>${row.book_category }</p>
                                         </td>-->
                                         <td class="product-quantity product-cart-details">
-                                            <input type="text" name="book_count" maxlength="2" th:id="${basket.id}" th:value="${basket.count}" size="1" onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' style='ime-mode: disabled; ' />
-                                            <button type="button" class="btn-info" onclick="fn_basketModify(${row.basket_num})" style="background-color:#32b5f3;">
+                                            <input th:type="text" th:name="count" maxlength="2" th:id="${basket.id}" th:value="${basket.count}" size="1" style='ime-mode: disabled; ' />
+                                            <button type="submit" class="btn-info" style="background-color:#32b5f3;">
                                                 <em>EDIT</em>
                                             </button>
                                         </td>
@@ -91,16 +94,15 @@
                                         </td>
                                         <td class="product-edit">
                                             <p>
-                                                <a href="javascript:;" onclick="singleOrder(${row.basket_book_num}, ${row.basket_book_count}, ${row.basket_num})" class="right-shoping-cart">BUY NOW</a>
+                                                <a href="#" class="right-shoping-cart">BUY NOW</a>
                                             </p>
                                         </td>
                                         <td class="product-remove">
-                                            <a href="javascript:;" onclick="fn_basketDelete(${row.basket_num})">
+                                            <a href="#" th:onclick="|deleteBasket(${basket.id})|">
                                                 <i class="flaticon-delete"></i>
                                             </a>
                                         </td>
                                     </tr>
-                                </c:forEach>
                             </div>
                             </tbody>
                             <div th:if ="${basket.size == 0 }">
@@ -112,7 +114,7 @@
                     </form>
                 </div>
                 <div class="shopingcart-bottom-area">
-                    <a class="left-shoping-cart" href="javascript:;">CONTINUE SHOPPING</a>
+                    <a class="left-shoping-cart" th:href="@{/main}">CONTINUE SHOPPING</a>
                     <div class="shopingcart-bottom-area pull-right">
                         <a class="right-shoping-cart" href="javascript:;" id="deleteAll">CLEAR SHOPPING CART</a>
                         <a class="right-shoping-cart" href="javascript:;" onclick="fn_selectDelete()">CLEAR SELECTED SHOPPING CART</a>
@@ -159,17 +161,17 @@
 								</span>
                         </h2>
                     </div>
-                    <c:if test="${basketList.size() ne 0 }">
+                    <div th:if="${basket.size} != 0">
                         <a href="javascript:;" onclick="fn_selectOrder()">SELECTED CHECKOUT</a>
                         <a href="javascript:;" onclick="fn_totalOrder()">CHECKOUT</a>
-                    </c:if>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Discount Area End -->
-<script src="<%=cp%>/bootstrap/js/custom.js"></script>
+<script th:src="@{/bootstrap/js/custom.js}"></script>
 <script type="text/javascript">
     function couponCheck() {
 
@@ -206,6 +208,33 @@
             }
         });
     }
+
+    function deleteBasket(id) {
+        //DELETE /api/board/{id}
+        $.ajax({
+            url: '/api/baskets/' + id,
+            type: 'DELETE',
+            success: function (result){
+                console.log('result',result);
+                alert('삭제됐습니다.');
+                window.location.href = '/basket/list';
+            }
+        });
+    }
+    function updateBasket(id) {
+        //PUT /api/board/{id}
+        alert("1");
+
+        $.ajax({
+            url: '/api/baskets/update/' + id,
+            success: function (result){
+                console.log('result',result);
+                alert('수정됐습니다.');
+                window.location.href = '/basket/list';
+            }
+        });
+    }
 </script>
+<footer th:replace="fragments/common :: footer"></footer>
 </body>
 </html>
